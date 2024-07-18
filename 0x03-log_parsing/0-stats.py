@@ -2,6 +2,7 @@
 
 import sys
 
+
 def print_msg(dict_sc, total_file_size):
     """
     Method to print
@@ -15,6 +16,7 @@ def print_msg(dict_sc, total_file_size):
     for key, val in sorted(dict_sc.items()):
         if val != 0:
             print("{}: {}".format(key, val))
+
 
 total_file_size = 0
 counter = 0
