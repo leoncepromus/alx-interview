@@ -48,4 +48,3 @@ else:
     output = []
     cell = 0
     solve_NQueens(int(N), cell, [], output)
-    
