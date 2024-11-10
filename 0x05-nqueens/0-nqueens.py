@@ -1,18 +1,12 @@
 #!/usr/bin/python3
-"""N queens solution finder module.
-"""
 import sys
 
-
 solutions = []
-"""The list of possible solutions to the N queens problem.
-"""
+"""The list of possible solutions to the N queens problem."""
 n = 0
-"""The size of the chessboard.
-"""
+"""The size of the chessboard."""
 pos = None
-"""The list of possible positions on the chessboard.
-"""
+"""The list of possible positions on the chessboard."""
 
 
 def get_input():
@@ -22,13 +16,12 @@ def get_input():
         int: The size of the chessboard.
     """
     global n
-    n = 0
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
     try:
         n = int(sys.argv[1])
-    except Exception:
+    except ValueError:
         print("N must be a number")
         sys.exit(1)
     if n < 4:
@@ -45,7 +38,7 @@ def is_attacking(pos0, pos1):
         pos1 (list or tuple): The second queen's position.
 
     Returns:
-        bool: True if the queens are in an attacking position else False.
+        bool: True if the queens are in an attacking position, else False.
     """
     if (pos0[0] == pos1[0]) or (pos0[1] == pos1[1]):
         return True
@@ -89,7 +82,8 @@ def build_solution(row, group):
     else:
         for col in range(n):
             a = (row * n) + col
-            matches = zip(list([pos[a]]) * len(group), group)
+            # Check if the position is under attack
+            matches = zip([pos[a]] * len(group), group)
             used_positions = map(lambda x: is_attacking(x[0], x[1]), matches)
             group.append(pos[a].copy())
             if not any(used_positions):
@@ -98,8 +92,7 @@ def build_solution(row, group):
 
 
 def get_solutions():
-    """Gets the solutions for the given chessboard size.
-    """
+    """Gets the solutions for the given chessboard size."""
     global pos, n
     pos = list(map(lambda x: [x // n, x % n], range(n ** 2)))
     a = 0
@@ -107,7 +100,13 @@ def get_solutions():
     build_solution(a, group)
 
 
+def print_solutions():
+    """Prints the solutions found."""
+    global solutions
+    for solution in solutions:
+        print(solution)
+
+
 n = get_input()
 get_solutions()
-for solution in solutions:
-    print(solution)
+print_solutions()
