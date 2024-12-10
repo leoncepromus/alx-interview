@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""Module defining isWinner function."""
+"""
+Prime Game
+"""
 
 def isWinner(x, nums):
     """Determine the winner of the prime game."""
@@ -13,18 +15,18 @@ def isWinner(x, nums):
     for i in range(1, max_n + 1):
         prime_counts[i] = prime_counts[i - 1] + (1 if i in primes else 0)
 
-    mariaWinsCount = 0
-    benWinsCount = 0
+    maria_wins_count = 0
+    ben_wins_count = 0
 
     for num in nums:
         if prime_counts[num] % 2 == 0:
-            benWinsCount += 1
+            ben_wins_count += 1
         else:
-            mariaWinsCount += 1
+            maria_wins_count += 1
 
-    if mariaWinsCount > benWinsCount:
+    if maria_wins_count > ben_wins_count:
         return "Maria"
-    if benWinsCount > mariaWinsCount:
+    if ben_wins_count > maria_wins_count:
         return "Ben"
     return None
 
