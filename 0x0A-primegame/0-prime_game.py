@@ -1,45 +1,48 @@
 #!/usr/bin/python3
+"""
+Prime Game
+
+"""
+
 
 def isWinner(x, nums):
-    """Function to determine the winner of the prime game."""
+    """Determine the winner of the prime game."""
+    if not nums or x < 1:
+        return None
+
+    max_n = max(nums)
+    primes = sieve_of_eratosthenes(max_n)
+    prime_counts = [0] * (max_n + 1)
+
+    for i in range(1, max_n + 1):
+        prime_counts[i] = prime_counts[i - 1] + (1 if i in primes else 0)
+
     maria_wins_count = 0
     ben_wins_count = 0
 
-    for n in nums:
-        if n < 2:
-            ben_wins_count += 1
-            continue
-
-        primes = sieve_of_eratosthenes(n)
-        turn_maria = True
-
-        while primes:
-            current_prime = primes.pop(0)
-            primes = [p for p in primes if p % current_prime != 0]
-
-            turn_maria = not turn_maria
-
-        if turn_maria:
+    for num in nums:
+        if prime_counts[num] % 2 == 0:
             ben_wins_count += 1
         else:
             maria_wins_count += 1
 
     if maria_wins_count > ben_wins_count:
         return "Maria"
-    elif ben_wins_count > maria_wins_count:
+    if ben_wins_count > maria_wins_count:
         return "Ben"
-    else:
-        return None
+    return None
 
 
-def sieve_of_eratosthenes(n):
-    """Generates all prime numbers up to n using the Sieve of Eratosthenes."""
-    sieve = [True] * (n + 1)
-    sieve[0] = sieve[1] = False
-
-    for i in range(2, int(n ** 0.5) + 1):
-        if sieve[i]:
-            for j in range(i * i, n + 1, i):
-                sieve[j] = False
-
-    return [i for i in range(n + 1) if sieve[i]]
+def sieve_of_eratosthenes(max_n):
+    """Precompute primes using the Sieve of Eratosthenes."""
+    primes = [True] * (max_n + 1)
+    primes[0] = primes[1] = False
+    result = set()
+    for i in range(2, int(max_n ** 0.5) + 1):
+        if primes[i]:
+            for j in range(i * i, max_n + 1, i):
+                primes[j] = False
+    for i in range(max_n + 1):
+        if primes[i]:
+            result.add(i)
+    return result
